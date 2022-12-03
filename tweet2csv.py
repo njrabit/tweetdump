@@ -12,14 +12,21 @@ class Tweet:
         self.time = ""
         self.user = ""
         self.tweet = ""
-        self.hashtags = ""
-        self.mentions = ""
+        self.hashtag = ""
+        self.mention = ""
 
     def output(self):
-        self.hashtags = hashtag.findall(self.tweet)
+        self.hashtag = hashtag.findall(self.tweet)
         self.mentions = username.findall(self.tweet)
         return (
-            f"\"{self.time}\",\"{self.user.encode()}\",\"{self.tweet.encode()}\",\"{self.mentions.encode()}\",\"{self.hashtags.encode()}\"")
+            f"\"{self.time}\",\"{self.user}\",\"{self.tweet}\",\"{self.mention}\",\"{self.hashtag}\"")
+
+    def postcode(self):
+        self.time = strip(self.time).encode("utf-8")
+        self.user = strip(self.user).encode("utf-8")
+        self.tweet = strip(self.tweet).encode("utf-8")
+        self.hashtag = strip(self.hashtag).encode("utf-8")
+        self.mention = strip(self.mention).encode("utf-8")
 
     def strip(self, s):
         return (s.split("\t")[1].encode())
@@ -33,9 +40,10 @@ class Tweet:
     def itweet(self, s):
         self.tweet = self.strip(s.strip())
 
-
 t = Tweet()
+
 print("starting")
+
 for l in sys.stdin:
 
     if '' == l.strip():

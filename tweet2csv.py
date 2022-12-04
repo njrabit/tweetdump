@@ -43,12 +43,14 @@ class Tweet:
         self.tweet = self.trim(s)
 
     def ihashtag(self):
-        s = dehash.findall(self.tweet)
-        self.hashtag = s.sort() 
+        if(type(s)==string):
+            s = dehash.findall(self.tweet)
+            self.hashtag = s.sort() 
 
     def imention(self):
-        s = demention.findall(self.tweet)
-        self.mention = s.sort()
+        if(type(s)==string):
+            s = demention.findall(self.tweet)
+            self.mention = s.sort()
         
 
 t = Tweet()

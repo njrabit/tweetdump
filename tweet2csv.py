@@ -26,8 +26,6 @@ class Tweet:
         return(s.encode("utf-8"))
     
     def postencode(self):
-        self.hashtag = dehash.findall(self.tweet)
-        self.mentions = demention.findall(self.tweet)
         self.time = self.postcode(self.time)
         self.user = self.postcode(self.user)
         self.tweet = self.postcode(self.tweet)
@@ -42,14 +40,22 @@ class Tweet:
     def itweet(self, s):
         self.tweet = self.trim(s)
 
-    def ihashtag(self, s):
-        self.hashtag = set(dehash.findall(self.tweet).sort())
+    def ihashtag(self):
+        s = dehash.findall(self.tweet)
+        self.hashtag = s.sort() 
+
+    def imention(self):
+        s = demention.findall(self.tweet)
+        self.mention = s.sort()
+        
 
 t = Tweet()
 
 for l in sys.stdin:
 
     if '' == l.strip():
+        t.imention()
+        t.ihashtag()
         t.postencode()
         print(t.output())
         t = Tweet()

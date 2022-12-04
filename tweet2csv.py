@@ -2,9 +2,8 @@ import sys
 import re
 from pprint import pprint
 
-hashtag = re.compile(r"(#+[a-zA-Z0-9(_)]{1,})")
-username = re.compile(r"(@+[a-zA-Z0-9(_)]{1,})")
-
+dehash = re.compile(r"(#+[a-zA-Z0-9(_)]{1,})")
+demention = re.compile(r"(@+[a-zA-Z0-9(_)]{1,})")
 
 class Tweet:
 
@@ -12,41 +11,46 @@ class Tweet:
         self.time = ""
         self.user = ""
         self.tweet = ""
-        self.hashtag = ""
-        self.mention = ""
+        self.hashtag = []
+        self.mention = []
 
     def output(self):
-        self.hashtag = hashtag.findall(self.tweet)
-        self.mentions = username.findall(self.tweet)
         return (
-            f"\"{self.time}\",\"{self.user}\",\"{self.tweet}\",\"{self.mention}\",\"{self.hashtag}\"")
+            f"\"{self.time}\",\"{self.user}\",\"{self.tweet}\",\"{self.mention}\",\"{self.hashtag}\""
+            )
+    
+    def trim(self, s):
+        return (s.strip().split("\t")[1])
 
-    def postcode(self):
-        self.time = strip(self.time).encode("utf-8")
-        self.user = strip(self.user).encode("utf-8")
-        self.tweet = strip(self.tweet).encode("utf-8")
-        self.hashtag = strip(self.hashtag).encode("utf-8")
-        self.mention = strip(self.mention).encode("utf-8")
+    def postcode(self, s):
+        return(s.encode("utf-8"))
+    
+    def postencode(self):
+        self.hashtag = dehash.findall(self.tweet)
+        self.mentions = demention.findall(self.tweet)
+        self.time = self.postcode(self.time)
+        self.user = self.postcode(self.user)
+        self.tweet = self.postcode(self.tweet)
 
-    def strip(self, s):
-        return (s.split("\t")[1].encode())
 
     def itime(self, s):
-        self.time = self.strip(s.strip())
+        self.time = self.trim(s)
 
     def iuser(self, s):
-        self.user = self.strip(s.strip().replace("http://twitter.com/", "@"))
+        self.user = self.trim(s).replace("http://twitter.com/", "@")
 
     def itweet(self, s):
-        self.tweet = self.strip(s.strip())
+        self.tweet = self.trim(s)
+
+    def ihashtag(self, s):
+        self.hashtag = set(dehash.findall(self.tweet).sort())
 
 t = Tweet()
-
-print("starting")
 
 for l in sys.stdin:
 
     if '' == l.strip():
+        t.postencode()
         print(t.output())
         t = Tweet()
 
@@ -58,5 +62,3 @@ for l in sys.stdin:
 
     if l.startswith("W\t"):
         t.itweet(l)
-
-    # print(f'Input : {l}')

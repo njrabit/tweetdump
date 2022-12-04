@@ -20,7 +20,9 @@ class Tweet:
             )
     
     def trim(self, s):
-        return (s.strip().split("\t")[1])
+        s = s.strip().split("\t")
+        if(len(s)>1):
+            return(s[1])
 
     def postcode(self, s):
         return(s.encode("utf-8"))

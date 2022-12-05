@@ -25,7 +25,10 @@ class Tweet:
             return(s[1])
 
     def postcode(self, s):
-        return(s.encode("utf-8"))
+        if(type(s)=="string"):          
+            return(s.encode("utf-8"))
+        else:
+            return("")
     
     def postencode(self):
         self.time = self.postcode(self.time)

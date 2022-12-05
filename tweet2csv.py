@@ -54,7 +54,6 @@ class Tweet:
         if(type(self.tweet)=="string"):
             s = demention.findall(self.tweet)
             self.mention = s.sort()
-        
 
 t = Tweet()
 
